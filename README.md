@@ -11,7 +11,8 @@ Das Script ist nach zBsp /home/pi zu kopieren.
 Die Rechte auf 754 setzen ( chmod 754 mex.py )
 
 Crontab erstellen:
-0 */2 * * * /home/pi/mex.py # Pfad ggf anpassen!
+
+**0 */2 * * * /home/pi/mex.py # Pfad ggf anpassen!**
 
 Weitere Instruktionen sind im Script-Kopf zufinden.
 
