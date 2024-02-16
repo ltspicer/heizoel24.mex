@@ -104,7 +104,6 @@ def main():
         client.disconnect()
         return
 
-    mqtt_send(client, "Items/DataReceived", True)
     daten = daten.json()
 
     if debug:
@@ -126,6 +125,7 @@ def main():
         if debug:
             print(topic1[n] + ":", daten[topic1[n]])
         mqtt_send(client, "Items/" + topic1[n], daten[topic1[n]])
+    mqtt_send(client, "Items/DataReceived", True)    
 
     daten3 = daten['RemainsUntilCombined']
 
