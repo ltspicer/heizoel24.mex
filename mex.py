@@ -9,15 +9,16 @@
 
 ########################### WICHTIGE INFOS ###############################
 #### Dieses Script per Cronjob alle 2 bis 4 Stunden ausführen         ####
-
+#### ---------------------------------------------------------------- ####
 #### Im ioBroker ist der MQTT Broker/Client Adapter zu installieren   ####
 #### Einstellungen:                                                   ####
 ####    IP: Server/Broker                                             ####
 ####    Authentifizierungseinstellungen: Benutzer/Passwort definieren ####
-
+#### ---------------------------------------------------------------- ####
 #### Zu installieren (auf Host, wo dieses Script läuft):              ####
 ####    sudo apt install python3-requests                             ####
-####    pip install paho-mqtt                                         ####
+####    pip3 install paho-mqtt                                        ####
+####    pip3 install typing-extensions                                ####
 ##########################################################################
 
 #### Hier Einträge anpassen! ####
