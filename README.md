@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/ltspicer/iobroker.mex/blob/main/mex.png)
 
-Natürlich sind auch andere Smarthome Systeme möglich. Es muss lediglich ein MQTT darauf laufen.
+Natürlich sind auch andere Smarthome Systeme möglich. Bedingung ist, dass ein MQTT darauf läuft.
 
 Dieses Script liest die MEX Daten vom Heizoel24 Server und sendet diese per MQTT an den ioBroker.
 
@@ -17,5 +17,7 @@ Crontab erstellen ( crontab -e ):
 0 */2 * * * /home/pi/mex.py # Pfad ggf anpassen!
 
 Weitere Instruktionen sind im Script-Kopf zufinden.
+
+Das Script kann auch auf dem gleichen Host laufen wie der ioBroker.
 
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
