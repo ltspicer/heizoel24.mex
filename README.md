@@ -1,8 +1,8 @@
-# ioBroker Heizoel24 MEX
+# Daten vom Heizoel24 MEX in den ioBroker importieren.
 
 ![Screenshot](https://github.com/ltspicer/iobroker.mex/blob/main/mex.png)
 
-Daten vom Heizoel24 MEX in den ioBroker importieren.
+Natürlich sind auch andere Smarthome Systeme möglich. Es muss lediglich ein MQTT darauf laufen.
 
 Dieses Script liest die MEX Daten vom Heizoel24 Server und sendet diese per MQTT an den ioBroker.
 
