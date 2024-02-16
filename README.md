@@ -1,6 +1,8 @@
 # ioBroker Heizoel24 MEX
 
-Daten vom Heizoel24 MEX im ioBroker
+![Screenshot](https://github.com/ltspicer/iobroker.mex/blob/main/mex.png)
+
+Daten vom Heizoel24 MEX in den ioBroker importieren.
 
 Dieses Script liest die MEX Daten vom Heizoel24 Server und sendet diese per MQTT an den ioBroker.
 
