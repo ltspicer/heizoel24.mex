@@ -90,7 +90,7 @@ def main():
         if debug:
             print("paho-mqtt version < 2.0")
     except:
-        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, "MEX")
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "MEX")
         if debug:
             print("paho-mqtt version >= 2.0")
     client.username_pw_set(mqtt_user, mqtt_pass)
