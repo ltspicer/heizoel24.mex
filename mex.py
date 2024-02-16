@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ##################################
-#             V1.1               #
+#             V1.2               #
 # MEX-Daten in ioBroker einlesen #
 #    Benötigt den MQTT Adapter   #
 #    (C) 2024 Daniel Luginbühl   #
@@ -78,13 +78,6 @@ def mex():
     return sensor_data
 
 def main():
-    daten = mex()
-    if daten == "error":
-        print("Fehler. Keine Daten empfangen.")
-        return
-    daten = daten.json()
-    if debug:
-        print(daten)
 
     topic1 = ['SensorId', 'IsMain', 'CurrentVolumePercentage', 'CurrentVolume', 'NotifyAtLowLevel', 'NotifyAtAlmostEmptyLevel', 'NotificationsEnabled', 'Usage', 'RemainsUntil', 'MaxVolume', 'ZipCode', 'MexName', 'LastMeasurementTimeStamp', 'LastMeasurementWithDifferentValue', 'BatteryPercentage', 'Battery', 'LitresPerCentimeter', 'LastMeasurementWasSuccessfully', 'SensorTypeId', 'HasMeasurements', 'MeasuredDaysCount', 'LastMeasurementWasTooHigh', 'YearlyOilUsage', 'RemainingDays', 'LastOrderPrice', 'ResultCode', 'ResultMessage']
 
@@ -92,9 +85,30 @@ def main():
 
     RemainsUntilCombined = ['MonthAndYear', 'RemainsValue', 'RemainsUnit']
 
-    client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, "MEX")
+    try:
+        client = mqtt.Client("MEX")
+        if debug:
+            print("paho-mqtt version < 2.0")
+    except:
+        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION1, "MEX")
+        if debug:
+            print("paho-mqtt version >= 2.0")
     client.username_pw_set(mqtt_user, mqtt_pass)
     client.connect(broker_address)
+
+    daten = mex()
+    if daten == "error":
+        if debug:
+            print("Fehler. Keine Daten empfangen.")
+        mqtt_send(client, "Items/DataReceived", False)
+        client.disconnect()
+        return
+
+    mqtt_send(client, "Items/DataReceived", True)
+    daten = daten.json()
+
+    if debug:
+        print(daten)
 
     if debug:
         print("---------------------")
