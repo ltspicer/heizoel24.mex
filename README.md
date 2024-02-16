@@ -18,6 +18,6 @@ Crontab erstellen ( crontab -e ):
 
 Weitere Instruktionen sind im Script-Kopf zufinden.
 
-Das Script kann auch auf dem gleichen Host laufen wie der ioBroker.
+Das Script kann auch auf dem gleichen Host laufen wie der ioBroker. Bei mir machte dies aber nach einiger Zeit Probleme (mqtt error read econnreset).
 
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
