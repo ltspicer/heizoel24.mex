@@ -29,8 +29,8 @@
 
 ################################### Hier Einträge anpassen! ###########################################
 
-username = "AAAAA@gmail.com"    # Deine Email Adresse bei Heizoel24
-passwort = "BBBBBBBBB"          # Dein Passwort bei Heizoel24
+username = "AAAAA@gmail.com"    # Deine Email Adresse bei HeizOel24
+passwort = "BBBBBBBBB"          # Dein Passwort bei HeizOel24
 
 broker_address = "192.168.1.50" # ioBroker IP, auf welchem der MQTT (Server) Adapter läuft
 mqtt_user = "uuuuuu"            # ioBroker MQTT User     (in Authentifizierungseinstellungen definiert)
