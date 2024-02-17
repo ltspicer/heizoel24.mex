@@ -21,7 +21,7 @@
 ####    pip3 install typing-extensions                                ####
 ##########################################################################
 
-#### Hier Einträge anpassen! ####
+####################### Hier Einträge anpassen! #######################################################
 username = "AAAAA@gmail.com"    # Deine Email Adresse bei Heizoel24
 passwort = "BBBBBBBBB"          # Dein Passwort bei Heizoel24
 
@@ -31,7 +31,7 @@ mqtt_pass = "pppppp"            # ioBroker MQTT Passwort (in Authentifizierungse
 
 debug = False                   # True = Debug Infos auf die Konsole
 
-##########################################################################
+#######################################################################################################
 
 import requests
 import time
@@ -118,6 +118,7 @@ def main():
     daten = daten.json()
 
     if debug:
+        print()
         print("JSON-Daten:")
         print("===========")
         print()
@@ -126,6 +127,7 @@ def main():
 
     if debug:
         print("---------------------")
+        print()
     for n in range(len(topic2)):
         if debug:
             print(topic2[n] + ":", daten[topic2[n]])
@@ -153,6 +155,7 @@ def main():
         mqtt_send(client, "RemainsUntilCombined/" + RemainsUntilCombined[n], daten3[RemainsUntilCombined[n]])
 
     client.disconnect()
+
 
 #### Diverse Beispiele ####
 #    print()
