@@ -4,9 +4,9 @@
 
 Natürlich sind auch andere Smarthome Systeme möglich. Bedingung ist, dass ein MQTT darauf läuft.
 
-Dieses Script liest die MEX Daten vom Heizoel24 Server und sendet diese per MQTT an den ioBroker.
+Dieses Script liest die MEX Daten vom HeizOel24 Server und sendet diese per MQTT an den ioBroker.
 
-Die Daten sind im ioBroker unter mqtt/0/MEX zufinden.
+Die Daten sind im ioBroker unter mqtt/0/MEX (oder mqtt/1/MEX) zufinden.
 
 Das Script ist nach zBsp /home/pi zu kopieren.
 
