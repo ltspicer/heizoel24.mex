@@ -1,32 +1,33 @@
 #!/usr/bin/python3
 
-##################################
-#             V1.3               #
-# MEX-Daten in ioBroker einlesen #
-#    Benötigt den MQTT Adapter   #
-#    (C) 2024 Daniel Luginbühl   #
-##################################
+#######################################################################################################
+###################################             V1.3               ####################################
+################################### MEX-Daten in ioBroker einlesen ####################################
+###################################    Benötigt den MQTT Adapter   ####################################
+###################################    (C) 2024 Daniel Luginbühl   ####################################
+#######################################################################################################
 
-########################### WICHTIGE INFOS ###############################
-#### Im ioBroker ist der MQTT Broker/Client Adapter zu installieren   ####
-#### Einstellungen:                                                   ####
-####    IP: Server/Broker                                             ####
-####    Authentifizierungseinstellungen: Benutzer/Passwort definieren ####
-#### ---------------------------------------------------------------- ####
-####                  Alles als User PI ausführen!                    ####
-#### ---------------------------------------------------------------- ####
-#### mex.py Script auf Rechte 754 setzen mit:                         ####
-#### chmod 754 mex.py                                                 ####
-#### Dieses Script per Cronjob alle 2 bis 4 Stunden ausführen:        ####
-#### crontab -e                                                       ####
-#### 0 */3 * * * /home/pi/mex.py          # Pfad ggf anpassen!        ####
-#### ---------------------------------------------------------------- ####
-#### Vorgängig zu installieren (auf Host, wo dieses Script läuft):    ####
-####    sudo apt install python3-requests                             ####
-####    pip3 install paho-mqtt                                        ####
-####    pip3 install typing-extensions                                ####
-##########################################################################
+######################################### WICHTIGE INFOS ##############################################
+################## Im ioBroker ist der MQTT Broker/Client Adapter zu installieren   ###################
+################## Einstellungen:                                                   ###################
+##################    IP: Server/Broker                                             ###################
+##################    Authentifizierungseinstellungen: Benutzer/Passwort definieren ###################
+################## ---------------------------------------------------------------- ###################
+##################                  Alles als User PI ausführen!                    ###################
+################## ---------------------------------------------------------------- ###################
+################## mex.py Script auf Rechte 754 setzen mit:                         ###################
+################## chmod 754 mex.py                                                 ###################
+################## Dieses Script per Cronjob alle 2 bis 4 Stunden ausführen:        ###################
+################## crontab -e                                                       ###################
+################## 0 */3 * * * /home/pi/mex.py          # Pfad ggf anpassen!        ###################
+################## ---------------------------------------------------------------- ###################
+################## Vorgängig zu installieren (auf Host, wo dieses Script läuft):    ###################
+##################    sudo apt install python3-requests                             ###################
+##################    pip3 install paho-mqtt                                        ###################
+##################    pip3 install typing-extensions                                ###################
+#######################################################################################################
 
+#######################################################################################################
 ################################### Hier Einträge anpassen! ###########################################
 
 username = "AAAAA@gmail.com"    # Deine Email Adresse bei HeizOel24
@@ -39,6 +40,8 @@ mqtt_pass = "pppppp"            # ioBroker MQTT Passwort (in Authentifizierungse
 debug = False                   # True = Debug Infos auf die Konsole
 
 #######################################################################################################
+#######################################################################################################
+
 
 import requests
 import time
