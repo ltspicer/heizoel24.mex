@@ -1,4 +1,4 @@
-# Daten vom HeizOel24 MEX in den ioBroker importieren.
+# Daten vom HeizOel24 MEX im ioBroker nutzen
 
 ![Screenshot](https://github.com/ltspicer/iobroker.mex/blob/main/mex.png)
 
