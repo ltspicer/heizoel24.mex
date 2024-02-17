@@ -164,18 +164,5 @@ def main():
 
     client.disconnect()
 
-
-#### Diverse Beispiele ####
-#    print()
-#    print("SensorId:                 ", daten["SensorId"])
-#    print("Aktueller Inhalt in %:    ", daten["CurrentVolumePercentage"])
-#    print("Aktueller Inhalt in Liter:", daten["CurrentVolume"])
-#    print("Max Tankinhalt in Liter:  ", daten["MaxVolume"])
-#    print("MEX Batterie in %:        ", daten["BatteryPercentage"])
-#    print("Letzte Messung in Ordnung:", daten["LastMeasurementWasSuccessfully"])
-#    print("Letzte Messung war am:    ", daten["LastMeasurementTimeStamp"])
-#    print("Reicht noch für Tage:     ", daten["RemainingDays"])        
-
-
 if __name__ == '__main__':   
     main()
