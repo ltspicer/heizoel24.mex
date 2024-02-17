@@ -14,7 +14,7 @@ Die Rechte auf 754 setzen ( chmod 754 mex.py )
 
 Crontab erstellen ( crontab -e ):
 
-0 */2 * * * /home/pi/mex.py # Pfad ggf anpassen!
+0 */3 * * * /home/pi/mex.py # Pfad ggf anpassen!
 
 Weitere Instruktionen sind im Script-Kopf zufinden.
 
