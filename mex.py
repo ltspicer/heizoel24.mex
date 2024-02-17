@@ -15,13 +15,17 @@
 ####    IP: Server/Broker                                             ####
 ####    Authentifizierungseinstellungen: Benutzer/Passwort definieren ####
 #### ---------------------------------------------------------------- ####
-#### Zu installieren (auf Host, wo dieses Script läuft):              ####
+#### mex.py Script auf Rechte 754 setzen                              ####
+#### crontab -e      erstellen mit:                                   ####
+#### 0 */3 * * * /home/pi/mex.py         # Pfad ggf anpassen!         ####
+#### ---------------------------------------------------------------- ####
+#### Vorgängig zu installieren (auf Host, wo dieses Script läuft):    ####
 ####    sudo apt install python3-requests                             ####
 ####    pip3 install paho-mqtt                                        ####
 ####    pip3 install typing-extensions                                ####
 ##########################################################################
 
-####################### Hier Einträge anpassen! #######################################################
+################################### Hier Einträge anpassen! ###########################################
 username = "AAAAA@gmail.com"    # Deine Email Adresse bei Heizoel24
 passwort = "BBBBBBBBB"          # Dein Passwort bei Heizoel24
 
@@ -124,8 +128,6 @@ def main():
         print()
         print(daten)
         print()
-
-    if debug:
         print("---------------------")
         print()
     for n in range(len(topic2)):
