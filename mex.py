@@ -8,16 +8,18 @@
 ##################################
 
 ########################### WICHTIGE INFOS ###############################
-#### Dieses Script per Cronjob alle 2 bis 4 Stunden ausführen         ####
-#### ---------------------------------------------------------------- ####
 #### Im ioBroker ist der MQTT Broker/Client Adapter zu installieren   ####
 #### Einstellungen:                                                   ####
 ####    IP: Server/Broker                                             ####
 ####    Authentifizierungseinstellungen: Benutzer/Passwort definieren ####
 #### ---------------------------------------------------------------- ####
-#### mex.py Script auf Rechte 754 setzen                              ####
-#### crontab -e      erstellen mit:                                   ####
-#### 0 */3 * * * /home/pi/mex.py         # Pfad ggf anpassen!         ####
+####                  Alles als User PI ausführen!                    ####
+#### ---------------------------------------------------------------- ####
+#### mex.py Script auf Rechte 754 setzen mit:                         ####
+#### chmod 754 mex.py                                                 ####
+#### Dieses Script per Cronjob alle 2 bis 4 Stunden ausführen:        ####
+#### crontab -e                                                       ####
+#### 0 */3 * * * /home/pi/mex.py          # Pfad ggf anpassen!        ####
 #### ---------------------------------------------------------------- ####
 #### Vorgängig zu installieren (auf Host, wo dieses Script läuft):    ####
 ####    sudo apt install python3-requests                             ####
@@ -26,6 +28,7 @@
 ##########################################################################
 
 ################################### Hier Einträge anpassen! ###########################################
+
 username = "AAAAA@gmail.com"    # Deine Email Adresse bei Heizoel24
 passwort = "BBBBBBBBB"          # Dein Passwort bei Heizoel24
 
