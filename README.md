@@ -2,7 +2,7 @@
 
 ![Screenshot](https://github.com/ltspicer/iobroker.mex/blob/main/mex.png)
 
-Natürlich sind auch andere Smarthome Systeme möglich. Bedingung ist, dass ein MQTT darauf läuft.
+Natürlich sind auch andere Smarthome Systeme möglich. Bedingung ist, dass ein MQTT Broker (Server) darauf läuft.
 
 Dieses Script liest die MEX Daten vom HeizOel24 Server und sendet diese per MQTT an den ioBroker.
 
