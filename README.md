@@ -15,6 +15,6 @@ Crontab erstellen ( crontab -e ):
 
 0 */3 * * * /home/pi/mex.py # Pfad ggf anpassen!
 
-Weitere Instruktionen sind im Script-Kopf zufinden.
+Weitere Instruktionen sind im Script-Kopf zufinden. Da werden auch die notwendigen Daten wie Logins, IP Adresse, Passwörter usw. eingetragen.
 
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
