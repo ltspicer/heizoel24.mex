@@ -73,14 +73,14 @@ def login():
             print('Login fehlgeschlagen! Heizoel24 Login Status Code: ' + str(reply.status_code))
     return return_flag
 
-def mex():  
+def mex():
     login_status = login()
     if login_status == False:
         return "error"
     if debug:
         print('Refresh sensor data cache...')
     url = 'https://api.heizoel24.de/app/api/app/GetDashboardData/'+ session_id + '/1/1/False'
-    reply = requests.get(url)     
+    reply = requests.get(url)
     if reply.status_code == 200:
         if debug:
             print("Daten wurden empfangen")
@@ -137,7 +137,7 @@ def main():
             print(topic2[n] + ":", daten[topic2[n]])
         mqtt_send(client, "PricingForecast/" + topic2[n], daten[topic2[n]])
         #time.sleep(0.1)
-    
+
     daten = daten["Items"]
     daten = daten[0]
 
@@ -163,5 +163,5 @@ def main():
 
     client.disconnect()
 
-if __name__ == '__main__':   
+if __name__ == '__main__':
     main()
