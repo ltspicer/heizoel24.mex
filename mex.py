@@ -140,7 +140,7 @@ def main():
         if debug:
             print(topic2[n] + ":", daten[topic2[n]])
         mqtt_send(client, "PricingForecast/" + topic2[n], daten[topic2[n]])
-
+        #time.sleep(0.1)
     daten = daten["Items"]
     daten = daten[0]
 
@@ -150,6 +150,7 @@ def main():
         if debug:
             print(topic1[n] + ":", daten[topic1[n]])
         mqtt_send(client, "Items/" + topic1[n], daten[topic1[n]])
+        #time.sleep(0.1)
     mqtt_send(client, "Items/DataReceived", True)
 
     daten3 = daten['RemainsUntilCombined']
@@ -161,6 +162,7 @@ def main():
         if debug:
             print(RemainsUntilCombined[n] + ":", daten3[RemainsUntilCombined[n]])
         mqtt_send(client, "RemainsUntilCombined/" + RemainsUntilCombined[n], daten3[RemainsUntilCombined[n]])
+        #time.sleep(0.1)
 
     client.disconnect()
 
