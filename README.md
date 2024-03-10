@@ -42,6 +42,6 @@ Further instructions can be found in the script header. The necessary data such 
 
 Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24-mex#2](https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2) )
 
-There were some problems when the mex.py script runs on the same host as the Smarthome system. Only the first line was transmitted.
+There were some problems when the mex.py script runs on the same host as the smarthome system. Only the first line was transmitted.
 
 Solution: comment out time.sleep(0.1) in lines 143, 153 and 165 (remove #).
