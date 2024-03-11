@@ -29,9 +29,9 @@
 username = "AAAAA@gmail.com"    # Deine Email Adresse bei HeizOel24
 passwort = "BBBBBBBBB"          # Dein Passwort bei HeizOel24
 
-broker_address = "192.168.1.50" # ioBroker IP, auf welchem der MQTT (Server) Adapter läuft
-mqtt_user = "uuuuuu"            # ioBroker MQTT User     (in Authentifizierungseinstellungen definiert)
-mqtt_pass = "pppppp"            # ioBroker MQTT Passwort (in Authentifizierungseinstellungen definiert)
+broker_address = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
+mqtt_user = "uuuuuu"            # MQTT User      (im MQTT Broker definiert)
+mqtt_pass = "pppppp"            # MQTT Passwort  (im MQTT Broker definiert)
 
 debug = False                   # True = Debug Infos auf die Konsole
 
