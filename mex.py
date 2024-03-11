@@ -39,9 +39,9 @@ debug = False                   # True = Debug Infos auf die Konsole
 ###################################################################################################
 
 
-import requests
 import time
 import json
+import requests
 import paho.mqtt.client as mqtt
 
 def mqtt_send(client, topic, wert):
@@ -73,7 +73,7 @@ def login():
             print('Login fehlgeschlagen! Heizoel24 Login Status Code: ' + str(reply.status_code))
     return return_flag
 
-def mex():  
+def mex():
     login_status = login()
     if login_status == False:
         return "error"
