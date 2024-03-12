@@ -24,7 +24,7 @@ Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/
 
 Es gab teilweise Probleme, wenn das mex.py Script auf dem gleichen Host wie das Smarthome System läuft. Es wurde nur die erste Zeile übermittelt.
 
-Lösung: time.sleep(0.1) in den Zeilen 139, 150 und 162 auskommentieren (# entfernen).
+Lösung: time.sleep(0.1) in den Zeilen 140, 151 und 163 auskommentieren (# entfernen).
 
 ------------------------
 
@@ -48,4 +48,4 @@ Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24
 
 There were some problems when the mex.py script runs on the same host as the smarthome system. Only the first line was transmitted.
 
-Solution: comment out time.sleep(0.1) in lines 139, 150 and 162 (remove #).
+Solution: comment out time.sleep(0.1) in lines 140, 151 and 163 (remove #).
