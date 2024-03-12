@@ -16,6 +16,8 @@ Crontab erstellen ( crontab -e ):
 
 0 */3 * * * /home/pi/mex.py # Pfad ggf anpassen!
 
+Die Minute (hier im Beispiel 0) auf einen zufälligen Wert von 0 bis 59 anpassen, damit nicht alle gleichzeitig auf den Server zugreifen!
+
 Weitere Instruktionen sind im Script-Kopf zufinden. Da werden auch die notwendigen Daten wie Logins, IP Adresse, Passwörter usw. eingetragen.
 
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
@@ -37,6 +39,8 @@ Set the rights to 754 ( chmod 754 mex.py )
 Create crontab ( crontab -e ):
 
 0 */3 * * * * /home/pi/mex.py # Adjust path if necessary!
+
+Adjust the minute (here 0 in the example) to a random value from 0 to 59 so that not everyone accesses the server at the same time!
 
 Further instructions can be found in the script header. The necessary data such as logins, IP address, passwords etc. are also entered there.
 
