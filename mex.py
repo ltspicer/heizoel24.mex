@@ -16,6 +16,7 @@
 ################ Dieses Script per Cronjob alle 2 bis 4 Stunden ausführen:        #################
 ################ crontab -e                                                       #################
 ################ 0 */3 * * * /home/pi/mex.py          # Pfad ggf anpassen!        #################
+################ ^ hier Minute ändern (0 bis 59)                                  #################
 ################ ---------------------------------------------------------------- #################
 ################ Vorgängig zu installieren (auf Host, wo dieses Script läuft):    #################
 ################    pip3 install python3-requests                                 #################
