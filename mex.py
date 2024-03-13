@@ -46,7 +46,8 @@ import paho.mqtt.client as mqtt
 # Zufällige Zeitverzögerung 0 bis 240 Sekunden
 verzoegerung = random.randint(0,240)
 if debug:
-    print(verzoegerung, "Sekunden Verzögerung")
+    verzoegerung = random.randint(0,10)
+print("Datenabfrage startet in", verzoegerung, "Sekunden")
 time.sleep(verzoegerung)
 
 def mqtt_send(client, topic, wert):
