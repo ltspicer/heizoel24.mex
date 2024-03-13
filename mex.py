@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V1.5               ##################################
+#################################             V1.6               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -43,8 +43,8 @@ debug = False                   # True = Debug Infos auf die Konsole
 import time, json, requests, random
 import paho.mqtt.client as mqtt
 
-# Zufällige Zeitverzögerung 0 bis 240 Sekunden
-verzoegerung = random.randint(0,240)
+# Zufällige Zeitverzögerung 0 bis 3540 Sekunden (0-59min)
+verzoegerung = random.randint(0,3540)
 if debug:
     verzoegerung = random.randint(0,10)
 print("Datenabfrage startet in", verzoegerung, "Sekunden")
@@ -56,7 +56,6 @@ def mqtt_send(client, topic, wert):
 def login():
     if debug:
         print('Login in...')
-    global session_id
     url = "https://api.heizoel24.de/app/api/app/Login"
     newHeaders = {'Content-type': 'application/json'}
     reply = requests.post(url, json = { "Password" : passwort, "Username" : username}, headers=newHeaders)
@@ -77,10 +76,10 @@ def login():
     else:
         if debug:
             print('Login fehlgeschlagen! Heizoel24 Login Status Code: ' + str(reply.status_code))
-    return return_flag
+    return return_flag, session_id
 
 def mex():  
-    login_status = login()
+    login_status, session_id = login()
     if login_status == False:
         return "error"
     if debug:
