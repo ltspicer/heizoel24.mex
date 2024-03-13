@@ -16,15 +16,11 @@ Crontab erstellen ( crontab -e ):
 
 0 */3 * * * /home/pi/mex.py # Pfad ggf anpassen!
 
-Die Minute (hier im Beispiel 0) auf einen zufälligen Wert von 0 bis 59 anpassen, damit nicht alle gleichzeitig auf den Server zugreifen!
-
 Weitere Instruktionen sind im Script-Kopf zufinden. Da werden auch die notwendigen Daten wie Logins, IP Adresse, Passwörter usw. eingetragen.
 
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
 
-Es gab teilweise Probleme, wenn das mex.py Script auf dem gleichen Host wie das Smarthome System läuft. Es wurde nur die erste Zeile übermittelt.
-
-Lösung: time.sleep(0.1) in den Zeilen 140, 151 und 163 auskommentieren (# entfernen).
+Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Script auf dem gleichen Host wie das Smarthome System läuft), dann delay im Scriptkopf auf True setzen.
 
 ------------------------
 
@@ -46,6 +42,4 @@ Further instructions can be found in the script header. The necessary data such 
 
 Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24-mex#2](https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2) )
 
-There were some problems when the mex.py script runs on the same host as the smarthome system. Only the first line was transmitted.
-
-Solution: comment out time.sleep(0.1) in lines 140, 151 and 163 (remove #).
+If only the first line is transmitted (this can happen if the mex.py script is running on the same host as the Smarthome system), then set delay in the script header to True.
