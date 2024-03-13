@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V1.4               ##################################
+#################################             V1.5               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -16,7 +16,6 @@
 ################ Dieses Script per Cronjob alle 2 bis 4 Stunden ausführen:        #################
 ################ crontab -e                                                       #################
 ################ 0 */3 * * * /home/pi/mex.py          # Pfad ggf anpassen!        #################
-################ ^ hier Minute ändern (0 bis 59)                                  #################
 ################ ---------------------------------------------------------------- #################
 ################ Vorgängig zu installieren (auf Host, wo dieses Script läuft):    #################
 ################    pip3 install python3-requests                                 #################
@@ -34,16 +33,21 @@ broker_address = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 mqtt_user = "uuuuuu"            # MQTT User      (im MQTT Broker definiert)
 mqtt_pass = "pppppp"            # MQTT Passwort  (im MQTT Broker definiert)
 
+delay = False                   # Auf True setzen, wenn der MQTT Broker nur die 1. Zeile empfängt
 debug = False                   # True = Debug Infos auf die Konsole
 
 ###################################################################################################
 ###################################################################################################
 
 
-import time
-import json
-import requests
+import time, json, requests, random
 import paho.mqtt.client as mqtt
+
+# Zufällige Zeitverzögerung 0 bis 240 Sekunden
+verzoegerung = random.randint(0,240)
+if debug:
+    print(verzoegerung, "Sekunden Verzögerung")
+time.sleep(verzoegerung)
 
 def mqtt_send(client, topic, wert):
     client.publish("MEX/" + topic, wert)
@@ -74,7 +78,7 @@ def login():
             print('Login fehlgeschlagen! Heizoel24 Login Status Code: ' + str(reply.status_code))
     return return_flag
 
-def mex():
+def mex():  
     login_status = login()
     if login_status == False:
         return "error"
@@ -137,7 +141,8 @@ def main():
         if debug:
             print(topic2[n] + ":", daten[topic2[n]])
         mqtt_send(client, "PricingForecast/" + topic2[n], daten[topic2[n]])
-        #time.sleep(0.1)
+        if delay:
+            time.sleep(0.1)
     
     daten = daten["Items"]
     daten = daten[0]
@@ -148,7 +153,8 @@ def main():
         if debug:
             print(topic1[n] + ":", daten[topic1[n]])
         mqtt_send(client, "Items/" + topic1[n], daten[topic1[n]])
-        #time.sleep(0.1)
+        if delay:
+            time.sleep(0.1)
     mqtt_send(client, "Items/DataReceived", True)
 
     daten3 = daten['RemainsUntilCombined']
@@ -160,7 +166,8 @@ def main():
         if debug:
             print(RemainsUntilCombined[n] + ":", daten3[RemainsUntilCombined[n]])
         mqtt_send(client, "RemainsUntilCombined/" + RemainsUntilCombined[n], daten3[RemainsUntilCombined[n]])
-        #time.sleep(0.1)
+        if delay:
+            time.sleep(0.1)
 
     client.disconnect()
 
