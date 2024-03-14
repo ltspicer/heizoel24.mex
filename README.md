@@ -1,4 +1,4 @@
-# Daten vom HeizOel24 MEX auslesen und per MQTT versenden
+## Daten vom HeizOel24 MEX auslesen und per MQTT versenden
 
 ![Screenshot](https://github.com/ltspicer/iobroker.mex/blob/main/mex.png)
 
