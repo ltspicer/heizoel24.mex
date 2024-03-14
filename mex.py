@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V1.6               ##################################
+#################################             V1.7               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -32,9 +32,12 @@ passwort = "BBBBBBBBB"          # Dein Passwort bei HeizOel24
 broker_address = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 mqtt_user = "uuuuuu"            # MQTT User      (im MQTT Broker definiert)
 mqtt_pass = "pppppp"            # MQTT Passwort  (im MQTT Broker definiert)
+mqtt_port = 1883                # MQTT Port (default: 1883)
 
 delay = False                   # Auf True setzen, wenn der MQTT Broker nur die 1. Zeile empfängt
-debug = False                   # True = Debug Infos auf die Konsole
+debug = False                   # True = Debug Infos auf die Konsole.
+#                                 Unbedingt nach debuggen zurück setzen!!
+#                                 Be sure to reset after debugging!!
 
 ###################################################################################################
 ###################################################################################################
@@ -46,7 +49,7 @@ import paho.mqtt.client as mqtt
 # Zufällige Zeitverzögerung 0 bis 3540 Sekunden (0-59min)
 verzoegerung = random.randint(0,3540)
 if debug:
-    verzoegerung = random.randint(0,10)
+    verzoegerung = random.randint(0,5)
 print("Datenabfrage startet in", verzoegerung, "Sekunden")
 time.sleep(verzoegerung)
 
@@ -116,7 +119,12 @@ def main():
         print("---------------------")
 
     client.username_pw_set(mqtt_user, mqtt_pass)
-    client.connect(broker_address)
+    try:
+        client.connect(broker_address, port=mqtt_port)
+    except:
+        print("Verbindung zum MQTT-Broker fehlgeschlagen")
+        print("Connection to MQTT broker failed")
+        exit(1)
 
     daten = mex()
     if daten == "error":
