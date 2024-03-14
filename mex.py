@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V1.7               ##################################
+#################################             V1.8               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -95,9 +95,24 @@ def mex():
         sensor_data = reply
     else:
         if debug:
-            print('Heizoel24 GetDashboardData Status Code: ' + str(reply.status_code))
+            print('Heizoel24 GetDashboardData > Status Code: ' + str(reply.status_code))
         sensor_data = "error"   # Fehler. Keine Daten empfangen.
-    return sensor_data
+    return sensor_data, session_id
+
+def measurement(sensor_id, session_id):
+    if debug:
+        print('Hole zukünftige Restölstände...')
+    url = 'https://api.heizoel24.de/app/api/app/measurement/CalculateRemaining/'+ session_id + '/' + str(sensor_id) + '/False'
+    reply = requests.get(url, timeout=5)
+    if reply.status_code == 200:
+        if debug:
+            print("Zukünftige Restölstände wurden empfangen")
+        zukunfts_daten = reply
+    else:
+        if debug:
+            print('Heizoel24 Restölstände > Status Code: ' + str(reply.status_code))
+        zukunfts_daten = "error"   # Fehler. Keine Daten empfangen.
+    return zukunfts_daten
 
 def main():
     topic1 = ['SensorId', 'IsMain', 'CurrentVolumePercentage', 'CurrentVolume', 'NotifyAtLowLevel', 'NotifyAtAlmostEmptyLevel', 'NotificationsEnabled', 'Usage', 'RemainsUntil', 'MaxVolume', 'ZipCode', 'MexName', 'LastMeasurementTimeStamp', 'LastMeasurementWithDifferentValue', 'BatteryPercentage', 'Battery', 'LitresPerCentimeter', 'LastMeasurementWasSuccessfully', 'SensorTypeId', 'HasMeasurements', 'MeasuredDaysCount', 'LastMeasurementWasTooHigh', 'YearlyOilUsage', 'RemainingDays', 'LastOrderPrice', 'ResultCode', 'ResultMessage']
@@ -126,7 +141,7 @@ def main():
         print("Connection to MQTT broker failed")
         exit(1)
 
-    daten = mex()
+    daten, session_id = mex()
     if daten == "error":
         if debug:
             print("Fehler. Keine Daten empfangen.")
@@ -150,7 +165,7 @@ def main():
             print(topic2[n] + ":", daten[topic2[n]])
         mqtt_send(client, "PricingForecast/" + topic2[n], daten[topic2[n]])
         if delay:
-            time.sleep(0.1)
+            time.sleep(0.05)
 
     daten = daten["Items"]
     daten = daten[0]
@@ -162,8 +177,11 @@ def main():
             print(topic1[n] + ":", daten[topic1[n]])
         mqtt_send(client, "Items/" + topic1[n], daten[topic1[n]])
         if delay:
-            time.sleep(0.1)
+            time.sleep(0.05)
     mqtt_send(client, "Items/DataReceived", True)
+
+    sensor_id = daten["SensorId"]
+    print("******* sensor, session:", sensor_id, session_id)
 
     daten3 = daten['RemainsUntilCombined']
 
@@ -175,7 +193,26 @@ def main():
             print(RemainsUntilCombined[n] + ":", daten3[RemainsUntilCombined[n]])
         mqtt_send(client, "RemainsUntilCombined/" + RemainsUntilCombined[n], daten3[RemainsUntilCombined[n]])
         if delay:
-            time.sleep(0.1)
+            time.sleep(0.05)
+
+    zukunfts_daten = measurement(sensor_id, session_id)
+
+    if zukunfts_daten == "error":
+        if debug:
+            print("Fehler. Keine Daten empfangen.")
+            return
+
+    # {'NotifyAtLowLevel': 20, 'NotifyAtAlmostEmptyLevel': 10, 'MaxVolume': 3920, 'CurrentVolume': 2649, 'ConsumptionCurveResult': {'2024-03-14T19:48:15.7952315+01:00': 2649, ...
+    zukunfts_daten = zukunfts_daten.json()
+    zukunfts_daten = zukunfts_daten['ConsumptionCurveResult']
+
+    n = 0
+    for key in zukunfts_daten:
+        if debug:
+            print(key.split('T')[0], zukunfts_daten[key], "Litres remaining")
+        mqtt_send(client, "CalculateRemaining/" + str(n).zfill(5), str(key).split('T')[0] + " = " + str(zukunfts_daten[key]) + " Ltr.")
+        n+=1
+        time.sleep(0.005)
 
     client.disconnect()
 
