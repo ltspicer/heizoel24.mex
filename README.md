@@ -22,6 +22,8 @@ Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/
 
 Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Script auf dem gleichen Host wie das Smarthome System läuft), dann delay im Scriptkopf auf True setzen.
 
+#### Wenn Debugmodus aktiviert wurde (debug = True), unbedingt nach debuggen wieder zurück setzen (debug = False)!
+
 ------------------------
 
 This script reads the MEX data from the HeizOel24 server and sends it to a smarthome system via MQTT.
@@ -43,3 +45,5 @@ Further instructions can be found in the script header. The necessary data such 
 Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24-mex#2](https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2) )
 
 If only the first line is transmitted (this can happen if the mex.py script is running on the same host as the Smarthome system), then set delay in the script header to True.
+
+#### If debug mode has been activated (debug = True), be sure to reset it after debugging (debug = False)!
