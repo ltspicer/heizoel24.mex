@@ -32,7 +32,7 @@ passwort = "BBBBBBBBB"          # Dein Passwort bei HeizOel24
 broker_address = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 mqtt_user = "uuuuuu"            # MQTT User      (im MQTT Broker definiert)
 mqtt_pass = "pppppp"            # MQTT Passwort  (im MQTT Broker definiert)
-mqtt_port = 1883                # MQTT Port (default: 1883)
+mqtt_port = 1883                # MQTT Port      (default: 1883)
 
 delay = False                   # Auf True setzen, wenn der MQTT Broker nur die 1. Zeile empfängt
 debug = False                   # True = Debug Infos auf die Konsole.
