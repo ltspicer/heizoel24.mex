@@ -24,7 +24,7 @@ Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Scri
 
 #### Wenn Debugmodus aktiviert wurde (debug = True), unbedingt nach debuggen wieder zurück setzen (debug = False)!
 
-# Viel Spass beim Mexen. Feedback ist sehr willkommen!
+## Viel Spass beim "Mexen". Feedback ist sehr willkommen!
 
 ------------------------
 
@@ -50,4 +50,4 @@ If only the first line is transmitted (this can happen if the mex.py script is r
 
 #### If debug mode has been activated (debug = True), be sure to reset it after debugging (debug = False)!
 
-# Have fun with Mexen. Feedback is very welcome!
+## Have fun with "Mexiing". Feedback is very welcome!
