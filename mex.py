@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V1.8               ##################################
+#################################             V1.9               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -101,16 +101,16 @@ def mex():
 
 def measurement(sensor_id, session_id):
     if debug:
-        print('Hole zukünftige Restölstände...')
+        print('Hole zukünftige Oelstände...')
     url = 'https://api.heizoel24.de/app/api/app/measurement/CalculateRemaining/'+ session_id + '/' + str(sensor_id) + '/False'
     reply = requests.get(url, timeout=5)
     if reply.status_code == 200:
         if debug:
-            print("Zukünftige Restölstände wurden empfangen")
+            print("Berechnete zukünftige Oelstände wurden empfangen")
         zukunfts_daten = reply
     else:
         if debug:
-            print('Heizoel24 Restölstände > Status Code: ' + str(reply.status_code))
+            print('Heizoel24 Oelstände > Status Code: ' + str(reply.status_code))
         zukunfts_daten = "error"   # Fehler. Keine Daten empfangen.
     return zukunfts_daten
 
