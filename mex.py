@@ -209,10 +209,11 @@ def main():
     n = 0
     for key in zukunfts_daten:
         if debug:
-            print(key.split('T')[0], zukunfts_daten[key], "Litres remaining")
-        mqtt_send(client, "CalculateRemaining/" + str(n).zfill(5), str(key).split('T')[0] + " = " + str(zukunfts_daten[key]) + " Ltr.")
+            print(key.split('T')[0], zukunfts_daten[key], "Liter remaining")
+        mqtt_send(client, "CalculatedRemaining/Day_" + str(n).zfill(4), str(key).split('T')[0] + " = " + str(zukunfts_daten[key]) + " Ltr.")
         n+=1
-        time.sleep(0.005)
+        if delay:
+            time.sleep(0.05)
 
     client.disconnect()
 
