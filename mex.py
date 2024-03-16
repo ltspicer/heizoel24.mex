@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V1.9               ##################################
+#################################             V2.0               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -33,6 +33,11 @@ broker_address = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 mqtt_user = "uuuuuu"            # MQTT User      (im MQTT Broker definiert)
 mqtt_pass = "pppppp"            # MQTT Passwort  (im MQTT Broker definiert)
 mqtt_port = 1883                # MQTT Port      (default: 1883)
+
+wenigerDaten = True             # Weniger Zukunftsdaten aufrufen (nur alle 14 Tage)
+erstelleJson = True             # True, wenn CalculatedRemaining.json erstellt werden soll
+jsonPfad = ""                   # Pfad für die Json Datei. Standardpfad ist bei Script.
+#                                 sonst Bsp.: jsonPfad = "/home/pi/"
 
 delay = False                   # Auf True setzen, wenn der MQTT Broker nur die 1. Zeile empfängt
 debug = False                   # True = Debug Infos auf die Konsole.
@@ -202,19 +207,27 @@ def main():
             print("Fehler. Keine Daten empfangen.")
             return
 
-    # {"NotifyAtLowLevel": 20, "NotifyAtAlmostEmptyLevel": 10, "MaxVolume": 3920, "CurrentVolume": 2649, "ConsumptionCurveResult": {"2024-03-14T19:48:15.7952315+01:00": 2649, ...
     zukunfts_daten = zukunfts_daten.json()
+
+    if erstelleJson:
+        json_object = json.dumps(zukunfts_daten, indent=4)
+        with open(jsonPfad + "CalculatedRemaining.json","w") as datei:
+            datei.write(json_object)
+
     zukunfts_daten = zukunfts_daten["ConsumptionCurveResult"]
 
     n = 0
     for key in zukunfts_daten:
-        if debug:
-            print(key.split("T")[0], zukunfts_daten[key], "Liter remaining")
-        mqtt_send(client, "CalculatedRemaining/Day_" + str(n).zfill(4), str(key).split("T")[0] + " = " + str(zukunfts_daten[key]) + " Ltr.")
+        ausfuehren = True
+        if wenigerDaten:
+            ausfuehren = (n % 14 == 0)
+        if ausfuehren:
+            if debug:
+                print(key.split("T")[0], zukunfts_daten[key], "Liter remaining")
+            mqtt_send(client, "CalculatedRemaining/Day_" + str(n).zfill(4), str(key).split("T")[0] + " = " + str(zukunfts_daten[key]) + " Ltr.")
         n+=1
         if delay:
             time.sleep(0.05)
-
     client.disconnect()
 
 if __name__ == "__main__":
