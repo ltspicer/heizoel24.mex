@@ -18,6 +18,8 @@ Crontab erstellen ( crontab -e ):
 
 Weitere Instruktionen sind im Script-Kopf zufinden. Da werden auch die notwendigen Daten wie Logins, IP Adresse, Passwörter usw. eingetragen.
 
+Hier kann auch eine json Datei angefordert werden (CalculatedRemaining.json)
+
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
 
 Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Script auf dem gleichen Host wie das Smarthome System läuft), dann delay im Scriptkopf auf True setzen.
@@ -43,6 +45,8 @@ Create crontab ( crontab -e ):
 Adjust the minute (here 0 in the example) to a random value from 0 to 59 so that not everyone accesses the server at the same time!
 
 Further instructions can be found in the script header. The necessary data such as logins, IP address, passwords etc. are also entered there.
+
+A json file can also be requested here (CalculatedRemaining.json)
 
 Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24-mex#2](https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2) )
 
