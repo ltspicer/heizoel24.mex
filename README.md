@@ -28,6 +28,13 @@ Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Scri
 
 ## Viel Spass beim "Mexen". Feedback ist sehr willkommen!
 
+Bericht von derlangemarkus:
+
+Ich habe das Retain-Flag hinzugefügt, indem ich Zeile 62 geändert habe in
+client.publish("MEX/" + topic, wert, 0, True)
+
+Ohne diese Änderung wurden die Werte nach einem Neustart von Home Assistant auf "unbekannt" gesetzt. Jetzt bleiben die letzten Werte erhalten.
+
 ------------------------
 
 This script reads the MEX data from the HeizOel24 server and sends it to a smarthome system via MQTT.
@@ -55,3 +62,10 @@ If only the first line is transmitted (this can happen if the mex.py script is r
 #### If debug mode has been activated (debug = True), be sure to reset it after debugging (debug = False)!
 
 ## Have fun with "Mexiing". Feedback is very welcome!
+
+Report by derlangemarkus:
+
+I added the retain flag by changing line 62 to
+client.publish("MEX/" + topic, value, 0, True)
+
+Without this change, the values were set to "unknown" after a restart of Home Assistant. Now the last values are retained.
