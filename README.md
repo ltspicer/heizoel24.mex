@@ -31,7 +31,7 @@ Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Scri
 Bericht von @derlangemarkus:
 
 Ich habe das Retain-Flag hinzugefügt, indem ich Zeile 62 geändert habe in
-client.publish("MEX/" + topic, wert, 0, True)
+#### client.publish("MEX/" + topic, wert, 0, True)
 
 Ohne diese Änderung wurden die Werte nach einem Neustart von Home Assistant auf "unbekannt" gesetzt. Jetzt bleiben die letzten Werte erhalten.
 
@@ -66,6 +66,6 @@ If only the first line is transmitted (this can happen if the mex.py script is r
 Report by @derlangemarkus:
 
 I added the retain flag by changing line 62 to
-client.publish("MEX/" + topic, value, 0, True)
+#### client.publish("MEX/" + topic, value, 0, True)
 
 Without this change, the values were set to "unknown" after a restart of Home Assistant. Now the last values are retained.
