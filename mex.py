@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V2.1               ##################################
+#################################             V2.2               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -33,7 +33,7 @@ broker_address = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 mqtt_user = "uuuuuu"            # MQTT User      (im MQTT Broker definiert)
 mqtt_pass = "pppppp"            # MQTT Passwort  (im MQTT Broker definiert)
 mqtt_port = 1883                # MQTT Port      (default: 1883)
-
+mex_id = 1                      # Falls mehrere MEX Geräte, hier ID eintragen (2, 3, 4, ...)
 wenigerDaten = True             # Weniger Zukunftsdaten abrufen (nur alle 14 Tage)
 erstelleJson = True             # True, wenn CalculatedRemaining.json erstellt werden soll
 jsonPfad = ""                   # Pfad für die Json Datei. Standardpfad ist bei Script.
@@ -43,7 +43,6 @@ delay = False                   # Auf True setzen, wenn der MQTT Broker nur die 
 debug = False                   # True = Debug Infos auf die Konsole.
 #                                 Unbedingt nach debuggen zurück setzen!!
 #                                 Be sure to reset after debugging!!
-
 ###################################################################################################
 ###################################################################################################
 
@@ -61,9 +60,9 @@ if debug:
 print("Datenabfrage startet in", verzoegerung, "Sekunden")
 time.sleep(verzoegerung)
 
-def SendMqtt(client, topic, wert):
+def SendMqtt(client, topic, wert, mex_id):
     """Send MQTT"""
-    client.publish("MEX/" + topic, wert, 0, True)
+    client.publish("MEX/" + str(mex_id) + "/" + topic, wert, 0, True)
 
 def login():
     """Login to Heizoel24 server"""
@@ -100,10 +99,11 @@ def mex():
         return "error"
     if debug:
         print("Refresh sensor data cache...")
-    url = "https://api.heizoel24.de/app/api/app/GetDashboardData/"+ session_id + "/1/1/False"
+    url = "https://api.heizoel24.de/app/api/app/GetDashboardData/"+ session_id + "/1/" + str(mex_id) + "/False"
     reply = requests.get(url, timeout=5)
     if reply.status_code == 200:
         if debug:
+            print("MEX ID:", mex_id)
             print("Daten wurden empfangen")
         sensor_data = reply
     else:
@@ -130,7 +130,7 @@ def measurement(sensor_id, session_id):
 
 def main():
     """Hauptroutine"""
-    topic1 = [
+    Items = [
         "SensorId", "IsMain", "CurrentVolumePercentage", "CurrentVolume", "NotifyAtLowLevel",
         "NotifyAtAlmostEmptyLevel", "NotificationsEnabled", "Usage", "RemainsUntil", "MaxVolume",
         "ZipCode", "MexName", "LastMeasurementTimeStamp", "LastMeasurementWithDifferentValue", "BatteryPercentage",
@@ -138,7 +138,7 @@ def main():
         "MeasuredDaysCount", "LastMeasurementWasTooHigh", "YearlyOilUsage", "RemainingDays", "LastOrderPrice",
         "ResultCode", "ResultMessage"
     ]
-    topic2 = [
+    PricingForecast = [
         "LastOrderPrice", "PriceComparedToYesterdayPercentage", "PriceForecastPercentage",
         "HasMultipleMexDevices", "DashboardViewMode", "ShowComparedToYesterday",
         "ShowForecast", "ResultCode", "ResultMessage"
@@ -171,7 +171,7 @@ def main():
     if daten == "error":
         if debug:
             print("Fehler. Keine Daten empfangen.")
-        SendMqtt(client, "Items/DataReceived", False)
+        SendMqtt(client, "Items/DataReceived", False, mex_id)
         client.disconnect()
         return
 
@@ -186,10 +186,16 @@ def main():
         print()
         print("---------------------")
         print()
-    for n in range(len(topic2)):
+    for n in range(len(PricingForecast)):
         if debug:
-            print(topic2[n] + ":", daten[topic2[n]])
-        SendMqtt(client, "PricingForecast/" + topic2[n], daten[topic2[n]])
+            print(PricingForecast[n] + ":", daten[PricingForecast[n]])
+        if (daten[PricingForecast[n]] == False) and (
+            PricingForecast[n] == "PriceComparedToYesterdayPercentage" or
+            PricingForecast[n] == "PriceForecastPercentage"):
+            if debug:
+                print(PricingForecast[n], "übersprungen weil 'False'")
+        else:
+            SendMqtt(client, "PricingForecast/" + PricingForecast[n], daten[PricingForecast[n]], mex_id)
         if delay:
             time.sleep(0.05)
 
@@ -198,13 +204,13 @@ def main():
 
     if debug:
         print("---------------------")
-    for n in range(len(topic1)):
+    for n in range(len(Items)):
         if debug:
-            print(topic1[n] + ":", daten[topic1[n]])
-        SendMqtt(client, "Items/" + topic1[n], daten[topic1[n]])
+            print(Items[n] + ":", daten[Items[n]])
+        SendMqtt(client, "Items/" + Items[n], daten[Items[n]], mex_id)
         if delay:
             time.sleep(0.05)
-    SendMqtt(client, "Items/DataReceived", True)
+    SendMqtt(client, "Items/DataReceived", True, mex_id)
 
     sensor_id = daten["SensorId"]
     print("******* sensor, session:", sensor_id, session_id)
@@ -217,7 +223,7 @@ def main():
     for n in range(len(RemainsUntilCombined)):
         if debug:
             print(RemainsUntilCombined[n] + ":", daten3[RemainsUntilCombined[n]])
-        SendMqtt(client, "RemainsUntilCombined/" + RemainsUntilCombined[n], daten3[RemainsUntilCombined[n]])
+        SendMqtt(client, "RemainsUntilCombined/" + RemainsUntilCombined[n], daten3[RemainsUntilCombined[n]], mex_id)
         if delay:
             time.sleep(0.05)
 
@@ -241,11 +247,11 @@ def main():
     for key in zukunfts_daten:
         ausfuehren = True
         if wenigerDaten:
-            ausfuehren = (n % 14 == 0)
+            ausfuehren = n % 14 == 0
         if ausfuehren:
             if debug:
                 print(key.split("T")[0], zukunfts_daten[key], "Liter remaining")
-            SendMqtt(client, "CalculatedRemaining/Today_plus_" + str(n).zfill(4) + "_Days", str(key).split("T")[0] + " = " + str(zukunfts_daten[key]) + " Ltr.")
+            SendMqtt(client, "CalculatedRemaining/Today_plus_" + str(n).zfill(4) + "_Days", str(key).split("T")[0] + " = " + str(zukunfts_daten[key]) + " Ltr.", mex_id)
         n+=1
         if delay:
             time.sleep(0.05)
