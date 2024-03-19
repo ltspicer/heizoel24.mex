@@ -31,6 +31,10 @@ Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Scri
 
 ## Changelog
 
+### V2.3 (2024-03-19)
+
+- Code gesäubert (pylint)
+
 ### V2.2 (2024-03-19)
 
 - Nun MEX ID eingabe möglich (bei mehreren Geräten)
