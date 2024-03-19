@@ -24,7 +24,7 @@ Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/
 
 Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn das mex.py Script auf dem gleichen Host wie das Smarthome System läuft), dann delay im Scriptkopf auf True setzen.
 
-#### Wenn Debugmodus aktiviert wurde (DEBUG = True), unbedingt nach debuggen wieder zurück setzen (debug = False)!
+#### Falls Debugmodus aktiviert wurde (DEBUG = True), unbedingt nach debuggen wieder zurück setzen (DEBUG = False)!
 
 ## Viel Spass beim "Mexen". Feedback ist sehr willkommen!
 
@@ -69,6 +69,6 @@ Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24
 
 If only the first line is transmitted (this can happen if the mex.py script is running on the same host as the Smarthome system), then set delay in the script header to True.
 
-#### If debug mode has been activated (DEBUG = True), be sure to reset it after debugging (debug = False)!
+#### If debug mode has been activated (DEBUG = True), be sure to reset it after debugging (DEBUG = False)!
 
 ## Have fun with "Mexiing". Feedback is very welcome!
