@@ -135,21 +135,23 @@ def measurement(sensor_id, session_id):
 def main():
     """Hauptroutine"""
     items = [
-        "SensorId", "IsMain", "CurrentVolumePercentage", "CurrentVolume", "NotifyAtLowLevel",
-        "NotifyAtAlmostEmptyLevel", "NotificationsEnabled", "Usage", "RemainsUntil",
-        "MaxVolume", "ZipCode", "MexName", "LastMeasurementTimeStamp",
-        "LastMeasurementWithDifferentValue", "BatteryPercentage", "Battery", "LitresPerCentimeter",
-        "LastMeasurementWasSuccessfully", "SensorTypeId", "HasMeasurements", "MeasuredDaysCount",
-        "LastMeasurementWasTooHigh", "YearlyOilUsage", "RemainingDays", "LastOrderPrice",
-        "ResultCode", "ResultMessage"
+        "SensorId",                 "IsMain",                           "CurrentVolumePercentage",
+        "CurrentVolume",            "NotifyAtLowLevel",                 "NotifyAtAlmostEmptyLevel",
+        "NotificationsEnabled",     "Usage",                            "RemainsUntil",
+        "MaxVolume",                "ZipCode",                          "MexName",
+        "LastMeasurementTimeStamp", "LastMeasurementWithDifferentValue","BatteryPercentage",
+        "Battery",                  "LitresPerCentimeter",        "LastMeasurementWasSuccessfully",
+        "SensorTypeId",             "HasMeasurements",                  "MeasuredDaysCount",
+        "LastMeasurementWasTooHigh","YearlyOilUsage",                   "RemainingDays",
+        "LastOrderPrice",           "ResultCode",                       "ResultMessage"
     ]
     pricing_forecast = [
-        "LastOrderPrice",        "PriceComparedToYesterdayPercentage", "PriceForecastPercentage",
-        "HasMultipleMexDevices", "DashboardViewMode",                  "ShowComparedToYesterday",
-        "ShowForecast",          "ResultCode",                         "ResultMessage"
+        "LastOrderPrice",          "PriceComparedToYesterdayPercentage","PriceForecastPercentage",
+        "HasMultipleMexDevices",   "DashboardViewMode",                 "ShowComparedToYesterday",
+        "ShowForecast",            "ResultCode",                        "ResultMessage"
     ]
     remains_until_combined = [
-        "MonthAndYear", "RemainsValue", "RemainsUnit"
+        "MonthAndYear",            "RemainsValue",                      "RemainsUnit"
     ]
 
     if DEBUG:
