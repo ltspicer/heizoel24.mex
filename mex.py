@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V2.3               ##################################
+#################################             V2.4               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2024 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -37,6 +37,7 @@ USERNAME = "uuuuu@gmail.com"    # Deine Email Adresse bei HeizOel24
 PASSWORD = "ppppppppp"          # Dein Passwort bei HeizOel24
 MEX_ID = 1                      # Falls mehrere MEX Geräte, hier ID eintragen (2, 3, 4, ...)
 
+MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
 BROKER_ADDRESS = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 MQTT_USER = "xxxxxx"            # MQTT User      (im MQTT Broker definiert)
 MQTT_PASS = "yyyyyy"            # MQTT Passwort  (im MQTT Broker definiert)
@@ -156,33 +157,36 @@ def main():
 
     if DEBUG:
         print("------------------------")
-    try:
-        client = mqtt.Client("mex")
-        if DEBUG:
-            print("paho-mqtt version < 2.0")
-    except ValueError:
-        client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "mex")
-        if DEBUG:
-            print("paho-mqtt version >= 2.0")
+    if MQTT_ACTIVE:
+        try:
+            client = mqtt.Client("mex")
+            if DEBUG:
+                print("paho-mqtt version < 2.0")
+        except ValueError:
+            client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, "mex")
+            if DEBUG:
+                print("paho-mqtt version >= 2.0")
 
     if DEBUG:
         print("------------------------")
 
-    client.username_pw_set(MQTT_USER, MQTT_PASS)
-    try:
-        client.connect(BROKER_ADDRESS, port=MQTT_PORT)
-    except OSError as error:
-        print("Verbindung zum MQTT-Broker fehlgeschlagen")
-        print("Connection to MQTT broker failed")
-        print(error)
-        exit(1)
+    if MQTT_ACTIVE:
+        client.username_pw_set(MQTT_USER, MQTT_PASS)
+        try:
+            client.connect(BROKER_ADDRESS, port=MQTT_PORT)
+        except OSError as error:
+            print("Verbindung zum MQTT-Broker fehlgeschlagen")
+            print("Connection to MQTT broker failed")
+            print(error)
+            exit(1)
 
     daten, session_id = mex()
     if daten == "error":
         if DEBUG:
             print("Fehler. Keine Daten empfangen.")
-        send_mqtt(client, "Items/DataReceived", False)
-        client.disconnect()
+        if MQTT_ACTIVE:
+            send_mqtt(client, "Items/DataReceived", False)
+            client.disconnect()
         return
 
     daten = daten.json()
@@ -205,7 +209,8 @@ def main():
             if DEBUG:
                 print(pricing_forecast, "übersprungen weil 'False'")
         else:
-            send_mqtt(client, "PricingForecast/" + pricing_forecast, daten[pricing_forecast])
+            if MQTT_ACTIVE:
+                send_mqtt(client, "PricingForecast/" + pricing_forecast, daten[pricing_forecast])
         if DELAY:
             time.sleep(0.05)
 
@@ -217,10 +222,12 @@ def main():
     for n, items in enumerate(items):
         if DEBUG:
             print(items + ":", daten[items])
-        send_mqtt(client, "Items/" + items, daten[items])
+        if MQTT_ACTIVE:
+            send_mqtt(client, "Items/" + items, daten[items])
         if DELAY:
             time.sleep(0.05)
-    send_mqtt(client, "Items/DataReceived", True)
+    if MQTT_ACTIVE:
+        send_mqtt(client, "Items/DataReceived", True)
 
     sensor_id = daten["SensorId"]
 
@@ -232,8 +239,9 @@ def main():
     for n, remains_until_combined in enumerate(remains_until_combined):
         if DEBUG:
             print(remains_until_combined + ":", daten3[remains_until_combined])
-        send_mqtt(client, "RemainsUntilCombined/" + remains_until_combined,
-                 daten3[remains_until_combined])
+        if MQTT_ACTIVE:
+            send_mqtt(client, "RemainsUntilCombined/" + remains_until_combined,
+                      daten3[remains_until_combined])
         if DELAY:
             time.sleep(0.05)
 
@@ -261,13 +269,15 @@ def main():
         if ausfuehren:
             if DEBUG:
                 print(key.split("T")[0], zukunfts_daten[key], "Liter remaining")
-            send_mqtt(client, "CalculatedRemaining/Today_plus_" + str(n).zfill(4) +
-                      "_Days", str(key).split("T", maxsplit=1)[0]\
-                      + " = " + str(zukunfts_daten[key]) + " Ltr.")
+            if MQTT_ACTIVE:
+                send_mqtt(client, "CalculatedRemaining/Today_plus_" + str(n).zfill(4) +
+                          "_Days", str(key).split("T", maxsplit=1)[0]\
+                          + " = " + str(zukunfts_daten[key]) + " Ltr.")
         n+=1
         if DELAY:
             time.sleep(0.05)
-    client.disconnect()
+    if MQTT_ACTIVE:
+        client.disconnect()
 
 if __name__ == "__main__":
     main()
