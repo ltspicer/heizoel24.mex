@@ -24,6 +24,8 @@ Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/
 
 Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn zBsp das mex.py Script auf dem gleichen Host wie das Smarthome System läuft), dann DELAY im Scriptkopf auf True setzen.
 
+Es gibt einen MEX Telegram Kanal: https://t.me/mex_heizoel24
+
 #### Falls Debugmodus aktiviert wurde (DEBUG = True), unbedingt nach debuggen wieder zurück setzen (DEBUG = False)!
 
 ## Viel Spass beim "Mexen". Feedback ist sehr willkommen!
@@ -73,6 +75,8 @@ A json file can also be requested here (CalculatedRemaining.json)
 Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24-mex#2](https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2) )
 
 If only the first line is transmitted (this can happen e.g. if the mex.py script is running on the same host as the Smarthome system), then set DELAY in the script header to True.
+
+There is a MEX Telegram channel: https://t.me/mex_heizoel24
 
 #### If debug mode has been activated (DEBUG = True), be sure to reset it after debugging (DEBUG = False)!
 
