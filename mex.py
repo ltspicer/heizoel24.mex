@@ -32,11 +32,14 @@ USERNAME = "uuuuu@gmail.com"    # Deine Email Adresse bei HeizOel24
 PASSWORD = "ppppppppp"          # Dein Passwort bei HeizOel24
 MEX_ID = 1                      # Falls mehrere MEX Geräte, hier ID eintragen (2, 3, 4, ...)
 
-MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
 BROKER_ADDRESS = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 MQTT_USER = "xxxxxx"            # MQTT User      (im MQTT Broker definiert)
 MQTT_PASS = "yyyyyy"            # MQTT Passwort  (im MQTT Broker definiert)
 MQTT_PORT = 1883                # MQTT Port      (default: 1883)
+-
+#----------------------------- Kann normalerweise belassen werden: -------------------------------#
+
+MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
 
 LESS_DATA = True                # Weniger Zukunftsdaten abrufen (nur alle 14 Tage)
 CREATE_JSON = True              # True, wenn CalculatedRemaining.json erstellt werden soll
