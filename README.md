@@ -4,7 +4,7 @@
 
 https://www.heizoel24.de/mex
 
-Dieses Script liest die MEX Daten vom HeizOel24 Server und sendet diese per MQTT an ein Smarthome System.
+Dieses Python3 Script liest die MEX Daten vom HeizOel24 Server und sendet diese per MQTT (mosquitto) an ein Smarthome System.
 
 Bedingung ist, dass ein MQTT Broker (Server) auf diesem Smarthome System läuft.
 
@@ -54,7 +54,7 @@ Es gibt einen MEX Telegram Kanal: https://t.me/mex_heizoel24
 ------------------------
 ------------------------
 
-This script reads the MEX data from the HeizOel24 server and sends it to a smarthome system via MQTT.
+This Python3 script reads the MEX data from the HeizOel24 server and sends it to a smarthome system via MQTT (mosquitto).
 
 The prerequisite is that an MQTT broker (server) is running on this smarthome system.
 
