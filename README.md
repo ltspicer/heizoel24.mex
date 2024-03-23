@@ -26,6 +26,8 @@ Wenn nur die erste Zeile übermittelt wird (kann vorkommen, wenn zBsp das mex.py
 
 Es gibt einen MEX Telegram Kanal: https://t.me/mex_heizoel24
 
+Zum einrichten, DEBUG auf True setzen.
+
 #### Falls Debugmodus aktiviert wurde (DEBUG = True), unbedingt nach debuggen wieder zurück setzen (DEBUG = False)!
 
 ### Viel Spass beim "Mexen". Feedback ist sehr willkommen!
@@ -75,6 +77,8 @@ Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24
 If only the first line is transmitted (this can happen e.g. if the mex.py script is running on the same host as the Smarthome system), then set DELAY in the script header to True.
 
 There is a MEX Telegram channel: https://t.me/mex_heizoel24
+
+To set up, set DEBUG to True.
 
 #### If debug mode has been activated (DEBUG = True), be sure to reset it after debugging (DEBUG = False)!
 
