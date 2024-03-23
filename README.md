@@ -28,7 +28,7 @@ Es gibt einen MEX Telegram Kanal: https://t.me/mex_heizoel24
 
 #### Falls Debugmodus aktiviert wurde (DEBUG = True), unbedingt nach debuggen wieder zurück setzen (DEBUG = False)!
 
-## Viel Spass beim "Mexen". Feedback ist sehr willkommen!
+### Viel Spass beim "Mexen". Feedback ist sehr willkommen!
 
 
 ## Changelog
@@ -78,4 +78,4 @@ There is a MEX Telegram channel: https://t.me/mex_heizoel24
 
 #### If debug mode has been activated (DEBUG = True), be sure to reset it after debugging (DEBUG = False)!
 
-## Have fun with "Mexiing". Feedback is very welcome!
+### Have fun with "Mexiing". Feedback is very welcome!
