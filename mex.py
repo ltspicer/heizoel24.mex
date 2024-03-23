@@ -46,7 +46,7 @@ MQTT_PORT = 1883                # MQTT Port      (default: 1883)
 LESS_DATA = True                # Weniger Zukunftsdaten abrufen (nur alle 14 Tage)
 CREATE_JSON = True              # True, wenn CalculatedRemaining.json erstellt werden soll
 JSON_PATH = ""                  # Pfad für die Json Datei. Standardpfad ist bei Script.
-                                # sonst zBsp.: jsonPfad = "/home/pi/"
+                                # sonst zBsp.: JSON_PATH = "/home/pi/"
 
 DELAY = False                   # Auf True setzen, wenn der MQTT Broker nur die 1. Zeile empfängt
 DEBUG = False                   # True = Debug Infos auf die Konsole.
