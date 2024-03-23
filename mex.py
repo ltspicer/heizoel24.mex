@@ -62,7 +62,8 @@ import random
 import requests
 import paho.mqtt.client as mqtt
 
-# Zufällige Zeitverzögerung 0 bis 3540 Sekunden (0-59min)
+# Zufällige Zeitverzögerung 0 bis 3540 Sekunden (0-59min). Wichtig, damit der Heizoel24 Server
+# nicht immer zur gleichen Zeit bombardiert wird!!
 verzoegerung = random.randint(0,3540)
 if DEBUG:
     verzoegerung = random.randint(0,5)
