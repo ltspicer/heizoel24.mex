@@ -36,7 +36,7 @@ BROKER_ADDRESS = "192.168.1.50" # MQTT Broker IP (da wo der MQTT Broker läuft)
 MQTT_USER = "xxxxxx"            # MQTT User      (im MQTT Broker definiert)
 MQTT_PASS = "yyyyyy"            # MQTT Passwort  (im MQTT Broker definiert)
 MQTT_PORT = 1883                # MQTT Port      (default: 1883)
--
+
 #----------------------------- Kann normalerweise belassen werden: -------------------------------#
 
 MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
