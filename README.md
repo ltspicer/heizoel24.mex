@@ -66,8 +66,6 @@ Create crontab ( crontab -e ):
 
 0 */3 * * * * /home/pi/mex.py # Adjust path if necessary!
 
-Adjust the minute (here 0 in the example) to a random value from 0 to 59 so that not everyone accesses the server at the same time!
-
 Further instructions can be found in the script header. The necessary data such as logins, IP address, passwords etc. are also entered there.
 
 A json file can also be requested here (CalculatedRemaining.json)
