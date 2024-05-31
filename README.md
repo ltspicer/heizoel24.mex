@@ -18,7 +18,7 @@ Crontab erstellen ( crontab -e ):
 
 Weitere Instruktionen sind im Script-Kopf zufinden. Da werden auch die notwendigen Daten wie Logins, IP Adresse, Passwörter usw. eingetragen.
 
-Hier kann auch eine json Datei angefordert werden (CalculatedRemaining.json)
+Hier kann auch eine json Datei mit den berechneten künftigen Oelständen angefordert werden (CalculatedRemaining.json).
 
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
 
@@ -70,7 +70,7 @@ Create crontab ( crontab -e ):
 
 Further instructions can be found in the script header. The necessary data such as logins, IP address, passwords etc. are also entered there.
 
-A json file can also be requested here (CalculatedRemaining.json)
+A json file with the calculated future oil levels can also be requested here (CalculatedRemaining.json).
 
 Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24-mex#2](https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2) )
 
