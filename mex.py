@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V2.4               ##################################
+#################################             V2.5               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
-#################################   (C) 2024 Daniel Luginbühl    ##################################
+#################################   (C) 2025 Daniel Luginbühl    ##################################
 ###################################################################################################
 
 ####################################### WICHTIGE INFOS ############################################
@@ -42,7 +42,7 @@ MQTT_PORT = 1883                # MQTT Port      (default: 1883)
 MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
 
 LESS_DATA = True                # Weniger Zukunftsdaten abrufen (nur alle 14 Tage)
-CREATE_JSON = True              # True, wenn CalculatedRemaining.json erstellt werden soll
+CREATE_JSON = True              # True = erstelle CalculatedRemaining.json und OilUsage.json
 JSON_PATH = ""                  # Pfad für die Json Datei. Standardpfad ist bei Script.
                                 # sonst zBsp.: JSON_PATH = "/home/pi/"
 
@@ -69,6 +69,16 @@ if DEBUG:
     verzoegerung = random.randint(0,5)
 print("Datenabfrage startet in", verzoegerung, "Sekunden")
 time.sleep(verzoegerung)
+
+def print_all_keys(d, prefix=""):
+    if isinstance(d, dict):
+        for k, v in d.items():
+            print_all_keys(v, prefix + k + "/")
+    elif isinstance(d, list):
+        for i, item in enumerate(d):
+            print_all_keys(item, prefix + str(i) + "/")
+    else:
+        print(f"{prefix}: {d}")
 
 def send_mqtt(client, topic, wert):
     """Send MQTT"""
@@ -121,7 +131,23 @@ def mex():
         if DEBUG:
             print("Heizoel24 GetDashboardData > Status Code: " + str(reply.status_code))
         sensor_data = "error"   # Fehler. Keine Daten empfangen.
-    return sensor_data, session_id
+
+    if DEBUG:
+        print("GetOilUsage")
+    url = "https://api.heizoel24.de/app/api/app/GetOilUsage/"\
+          + session_id + "/False"
+    reply = requests.get(url, timeout=5)
+    if reply.status_code == 200:
+        if DEBUG:
+            print("MEX ID:", MEX_ID)
+            print("Daten wurden empfangen")
+        oil_usage = reply
+    else:
+        if DEBUG:
+            print("Heizoel24 GetOilUsage > Status Code: " + str(reply.status_code))
+        oil_usage = "error"   # Fehler. Keine Daten empfangen.
+
+    return sensor_data, session_id, oil_usage
 
 def measurement(sensor_id, session_id):
     """Berechnete zukünftige Oelstände holen"""
@@ -187,7 +213,7 @@ def main():
             print(error)
             exit(1)
 
-    daten, session_id = mex()
+    daten, session_id, oil_usage = mex()
     if daten == "error":
         if DEBUG:
             print("Fehler. Keine Daten empfangen.")
@@ -203,9 +229,14 @@ def main():
         print("JSON-Daten:")
         print("===========")
         print()
-        print(daten)
+        #print(daten)
+        print_all_keys(daten)
         print()
         print("---------------------")
+        print("JSON-OilUsage:")
+        print("==============")
+        print()
+        print(oil_usage.json())
         print()
     for n, pricing_forecast in enumerate(pricing_forecast):
         if DEBUG:
@@ -260,13 +291,18 @@ def main():
             return
 
     zukunfts_daten = zukunfts_daten.json()
+    oil_usage = oil_usage.json()
 
     if CREATE_JSON:
         json_object = json.dumps(zukunfts_daten, indent=4)
         with open(JSON_PATH + "CalculatedRemaining.json","w", encoding="utf-8") as datei:
             datei.write(json_object)
+        json_object = json.dumps(oil_usage, indent=4)
+        with open(JSON_PATH + "OilUsage.json","w", encoding="utf-8") as datei:
+            datei.write(json_object)
 
     zukunfts_daten = zukunfts_daten["ConsumptionCurveResult"]
+    oil_usage = oil_usage["Values"]
 
     n = 0
     for key in zukunfts_daten:
@@ -278,11 +314,21 @@ def main():
                 print(key.split("T")[0], zukunfts_daten[key], "Liter remaining")
             if MQTT_ACTIVE:
                 send_mqtt(client, "CalculatedRemaining/Today_plus_" + str(n).zfill(4) +
-                          "_Days", str(key).split("T", maxsplit=1)[0]\
-                          + " = " + str(zukunfts_daten[key]) + " Ltr.")
+                          "_Days", str(key).split("T", maxsplit=1)[0] +
+                          " = " + str(zukunfts_daten[key]) + " Ltr.")
         n+=1
         if DELAY:
             time.sleep(0.05)
+
+    for key in oil_usage:
+        if DEBUG:
+            print(key.split("T")[0], oil_usage[key], "Liter used")
+        if MQTT_ACTIVE:
+            send_mqtt(client, "OilUsage/" + str(key).split("T", maxsplit=1)[0],
+                      str(oil_usage[key]) + " Ltr.")
+        if DELAY:
+            time.sleep(0.05)
+
     if MQTT_ACTIVE:
         client.disconnect()
 
