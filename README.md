@@ -18,7 +18,7 @@ Crontab erstellen ( crontab -e ):
 
 Weitere Instruktionen sind im Script-Kopf zufinden. Da werden auch die notwendigen Daten wie Logins, IP Adresse, Passwörter usw. eingetragen.
 
-Hier kann auch eine json Datei mit den berechneten künftigen Oelständen angefordert werden (CalculatedRemaining.json).
+Hier kann auch eine json Datei mit den berechneten künftigen Oelständen (CalculatedRemaining.json) und der Verbrauch in der Vergangenheit (OilUsage.json) angefordert werden.
 
 Herzlichen Dank an cpatscheider für seine Unterstützung! ( https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2 )
 
@@ -34,6 +34,10 @@ Zum einrichten, DEBUG auf True setzen.
 
 
 ## Changelog
+
+### V2.5 (2025-06-17)
+
+- Oelverbrauch in der Vergangenheit kann nun abgefragt werden
 
 ### V2.4 (2024-03-21)
 
@@ -70,7 +74,7 @@ Create crontab ( crontab -e ):
 
 Further instructions can be found in the script header. The necessary data such as logins, IP address, passwords etc. are also entered there.
 
-A json file with the calculated future oil levels can also be requested here (CalculatedRemaining.json).
+A JSON file containing the calculated future oil levels (CalculatedRemaining.json) and past consumption (OilUsage.json) can also be requested here.
 
 Many thanks to cpatscheider for his support! ( [Secret-Lab-Productions/heizoel24-mex#2](https://github.com/Secret-Lab-Productions/heizoel24-mex/discussions/2) )
 
