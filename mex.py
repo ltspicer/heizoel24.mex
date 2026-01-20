@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V2.5               ##################################
+#################################             V2.6               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
-#################################   (C) 2025 Daniel Luginbühl    ##################################
+#################################   (C) 2026 Daniel Luginbühl    ##################################
 ###################################################################################################
 
 ####################################### WICHTIGE INFOS ############################################
@@ -42,7 +42,11 @@ MQTT_PORT = 1883                # MQTT Port      (default: 1883)
 MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
 
 LESS_DATA = True                # Weniger Zukunftsdaten abrufen (nur alle 14 Tage)
-CREATE_JSON = True              # True = erstelle CalculatedRemaining.json und OilUsage.json
+CREATE_JSON = True              # True erstellt:
+                                #   CalculatedRemaining.json
+                                #   OilUsage.json
+                                #   Items.json
+
 JSON_PATH = ""                  # Pfad für die Json Datei. Standardpfad ist bei Script.
                                 # sonst zBsp.: JSON_PATH = "/home/pi/"
 
@@ -53,7 +57,6 @@ DEBUG = False                   # True = Debug Infos auf die Konsole.
 
 ###################################################################################################
 ###################################################################################################
-
 #--------------------------------- Ab hier nichts mehr verändern! --------------------------------#
 
 import time
@@ -255,8 +258,20 @@ def main():
     daten = daten["Items"]
     daten = daten[0]
 
+    battery = daten.get("Battery", 0)
+    try:
+        battery = float(battery)
+    except (TypeError, ValueError):
+        battery = 0.0
+
+    if battery < 2.5:
+        lowbat = True
+    else:
+        lowbat = False
+
     if DEBUG:
         print("---------------------")
+        print("LowBattery:", lowbat)
     for n, items in enumerate(items):
         if DEBUG:
             print(items + ":", daten[items])
@@ -266,6 +281,7 @@ def main():
             time.sleep(0.05)
     if MQTT_ACTIVE:
         send_mqtt(client, "Items/DataReceived", True)
+        send_mqtt(client, "Items/LowBattery", lowbat)
 
     sensor_id = daten["SensorId"]
 
@@ -299,6 +315,9 @@ def main():
             datei.write(json_object)
         json_object = json.dumps(oil_usage, indent=4)
         with open(JSON_PATH + "OilUsage.json","w", encoding="utf-8") as datei:
+            datei.write(json_object)
+        json_object = json.dumps(daten, indent=4)
+        with open(JSON_PATH + "Items.json","w", encoding="utf-8") as datei:
             datei.write(json_object)
 
     zukunfts_daten = zukunfts_daten["ConsumptionCurveResult"]

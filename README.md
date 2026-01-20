@@ -35,6 +35,11 @@ Zum einrichten, DEBUG auf True setzen.
 
 ## Changelog
 
+### V2.6 (2026-01-20)
+
+- LowBattery Flag hinzugefügt
+- Items.json kann nun auch exportiert werden
+
 ### V2.5 (2025-06-17)
 
 - Oelverbrauch in der Vergangenheit kann nun abgefragt werden
