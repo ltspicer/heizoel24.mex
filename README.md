@@ -35,6 +35,10 @@ Zum einrichten, DEBUG auf True setzen.
 
 ## Changelog
 
+### V2.7 (2026-04-06)
+
+- Jahresverbrauchs Berechnung hinzugefügt
+
 ### V2.6 (2026-01-20)
 
 - LowBattery Flag hinzugefügt

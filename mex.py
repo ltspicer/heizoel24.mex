@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V2.6               ##################################
+#################################             V2.7               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2026 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -39,6 +39,9 @@ MQTT_PORT = 1883                # MQTT Port      (default: 1883)
 
 #----------------------------- Kann normalerweise belassen werden: -------------------------------#
 
+REFERENCE_MONTH = 6             # Stichmonat für die Jahresverbrauchs Berechnung (1-12)
+                                # 0 deaktiviert die Übertragung der Jahresverbrauchs Daten
+
 MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
 
 LESS_DATA = True                # Weniger Zukunftsdaten abrufen (nur alle 14 Tage)
@@ -64,6 +67,7 @@ import json
 import random
 import requests
 import paho.mqtt.client as mqtt
+from datetime import datetime
 
 # Zufällige Zeitverzögerung 0 bis 3540 Sekunden (0-59min). Wichtig, damit der Heizoel24 Server
 # nicht immer zur gleichen Zeit bombardiert wird!!
@@ -150,7 +154,9 @@ def mex():
             print("Heizoel24 GetOilUsage > Status Code: " + str(reply.status_code))
         oil_usage = "error"   # Fehler. Keine Daten empfangen.
 
-    return sensor_data, session_id, oil_usage
+    yearly_oil_usage = reply.json()
+
+    return sensor_data, session_id, oil_usage, yearly_oil_usage
 
 def measurement(sensor_id, session_id):
     """Berechnete zukünftige Oelstände holen"""
@@ -168,6 +174,25 @@ def measurement(sensor_id, session_id):
             print("Heizoel24 Oelstände > Status Code: " + str(reply.status_code))
         zukunfts_daten = "error"   # Fehler. Keine Daten empfangen.
     return zukunfts_daten
+
+def calc_annual_for(entries, year, reference_month):
+    # 1. Stichtag bestimmen (1. des Folgemonats)
+    end_month = reference_month + 1
+    end_year = year
+
+    if end_month == 13:
+        end_month = 1
+        end_year = year + 1
+
+    # 2. Start- und Enddatum setzen
+    end_date = datetime(end_year, end_month, 1)
+    start_date = datetime(end_year - 1, end_month, 1)
+
+    # 3. Werte im Zeitraum sammeln
+    window = [e for e in entries if start_date <= e["date"] < end_date]
+
+    # 4. Summe bilden
+    return sum(e["value"] for e in window)
 
 def main():
     """Hauptroutine"""
@@ -216,7 +241,7 @@ def main():
             print(error)
             exit(1)
 
-    daten, session_id, oil_usage = mex()
+    daten, session_id, oil_usage, yearly_oil_usage = mex()
     if daten == "error":
         if DEBUG:
             print("Fehler. Keine Daten empfangen.")
@@ -330,7 +355,7 @@ def main():
             ausfuehren = n % 14 == 0
         if ausfuehren:
             if DEBUG:
-                print(key.split("T")[0], zukunfts_daten[key], "Liter remaining")
+                print(key.split("T")[0], zukunfts_daten[key], "Ltr. remaining")
             if MQTT_ACTIVE:
                 send_mqtt(client, "CalculatedRemaining/Today_plus_" + str(n).zfill(4) +
                           "_Days", str(key).split("T", maxsplit=1)[0] +
@@ -341,12 +366,49 @@ def main():
 
     for key in oil_usage:
         if DEBUG:
-            print(key.split("T")[0], oil_usage[key], "Liter used")
+            print(key.split("T")[0], oil_usage[key], "Ltr. used")
         if MQTT_ACTIVE:
             send_mqtt(client, "OilUsage/" + str(key).split("T", maxsplit=1)[0],
-                      str(oil_usage[key]) + " Ltr.")
+                      str(oil_usage[key]))
         if DELAY:
             time.sleep(0.05)
+
+    # Jahresverbrauchs Berechnung
+
+    if REFERENCE_MONTH != 0:
+        entries = []
+        for date_str, value in yearly_oil_usage["Values"].items():
+            y, m, _ = date_str.split("T")[0].split("-")
+            entries.append({
+                "date": datetime(int(y), int(m), 1),  # Monatsanfang
+                "value": value
+            })
+
+        # Sortieren
+        entries.sort(key=lambda e: e["date"])
+
+        # Jahre extrahieren
+        min_year = min(e["date"].year for e in entries)
+
+        current_year = datetime.now().year
+
+        for year in range(min_year + 1, current_year + 1):
+            month_str = f"{REFERENCE_MONTH:02d}"
+
+            value = calc_annual_for(entries, year, REFERENCE_MONTH)
+
+            topic = f"AnnualConsumption/{year}-{month_str}"
+
+            if MQTT_ACTIVE:
+                if value is None:
+                    if DEBUG:
+                        print(f"MQTT: {topic} omitted, because value is null (not enough months)")
+                else:
+                    send_mqtt(client, topic, str(value))
+                    if DEBUG:
+                        print(f"MQTT sent: {topic} = {value} Ltr.")
+
+    time.sleep(0.5)
 
     if MQTT_ACTIVE:
         client.disconnect()
