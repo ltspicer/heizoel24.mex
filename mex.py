@@ -39,7 +39,7 @@ MQTT_PORT = 1883                # MQTT Port      (default: 1883)
 
 #----------------------------- Kann normalerweise belassen werden: -------------------------------#
 
-REFERENCE_MONTH = 6             # Stichmonat für die Jahresverbrauchs Berechnung (1-12)
+REFERENCE_MONTH = 6             # Stichmonat (Monatsende) für Jahresverbrauchs Berechnung (1-12)
                                 # 0 deaktiviert die Übertragung der Jahresverbrauchs Daten
 
 MQTT_ACTIVE = True              # Auf False, wenn nichts MQTT published werden soll
