@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V2.7               ##################################
+#################################             V2.8               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2026 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -63,11 +63,11 @@ DEBUG = False                   # True = Debug Infos auf die Konsole.
 #--------------------------------- Ab hier nichts mehr verändern! --------------------------------#
 
 import time
+from datetime import datetime
 import json
 import random
 import requests
 import paho.mqtt.client as mqtt
-from datetime import datetime
 
 # Zufällige Zeitverzögerung 0 bis 3540 Sekunden (0-59min). Wichtig, damit der Heizoel24 Server
 # nicht immer zur gleichen Zeit bombardiert wird!!
@@ -78,6 +78,7 @@ print("Datenabfrage startet in", verzoegerung, "Sekunden")
 time.sleep(verzoegerung)
 
 def print_all_keys(d, prefix=""):
+    """Alle Zeichen ausgeben"""
     if isinstance(d, dict):
         for k, v in d.items():
             print_all_keys(v, prefix + k + "/")
@@ -158,7 +159,7 @@ def mex():
 
     return sensor_data, session_id, oil_usage, yearly_oil_usage
 
-def measurement(sensor_id, session_id):
+def future_oil_levels(sensor_id, session_id):
     """Berechnete zukünftige Oelstände holen"""
     if DEBUG:
         print("Hole zukünftige Oelstände...")
@@ -176,7 +177,7 @@ def measurement(sensor_id, session_id):
     return zukunfts_daten
 
 def calc_annual_for(entries, year, reference_month):
-    # 1. Stichtag bestimmen (1. des Folgemonats)
+    """Stichtag bestimmen (1. des Folgemonats)"""
     end_month = reference_month + 1
     end_year = year
 
@@ -324,7 +325,7 @@ def main():
         if DELAY:
             time.sleep(0.05)
 
-    zukunfts_daten = measurement(sensor_id, session_id)
+    zukunfts_daten = future_oil_levels(sensor_id, session_id)
 
     if zukunfts_daten == "error":
         if DEBUG:
