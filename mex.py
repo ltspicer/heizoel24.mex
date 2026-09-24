@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 ###################################################################################################
-#################################             V2.8               ##################################
+#################################             V2.9               ##################################
 #################################  MEX-Daten per MQTT versenden  ##################################
 #################################   (C) 2026 Daniel Luginbühl    ##################################
 ###################################################################################################
@@ -50,8 +50,9 @@ CREATE_JSON = True              # True erstellt:
                                 #   OilUsage.json
                                 #   Items.json
 
-JSON_PATH = ""                  # Pfad für die Json Datei. Standardpfad ist bei Script.
-                                # sonst zBsp.: JSON_PATH = "/home/pi/"
+JSON_PATH = ""                  # Pfad für die Json Datei.
+                                # Standardpfad ist ein Unterverzeichnis "data" beim Script.
+                                # Sonst zBsp.: JSON_PATH = "/home/pi/"
 
 DELAY = False                   # Auf True setzen, wenn der MQTT Broker nur die 1. Zeile empfängt
 DEBUG = False                   # True = Debug Infos auf die Konsole.
@@ -62,12 +63,58 @@ DEBUG = False                   # True = Debug Infos auf die Konsole.
 ###################################################################################################
 #--------------------------------- Ab hier nichts mehr verändern! --------------------------------#
 
+import os
 import time
 from datetime import datetime
 import json
 import random
 import requests
 import paho.mqtt.client as mqtt
+from pathlib import Path
+
+if CREATE_JSON:
+    # Speicherort des aktuellen Skripts ermitteln
+    script_dir = Path(__file__).resolve().parent
+
+    # Falls JSON_PATH leer ist, nutze "Skript-Ordner + data/"
+    if not JSON_PATH or JSON_PATH.strip() == "":
+        target_dir = script_dir / "data"
+    else:
+        target_dir = Path(JSON_PATH)
+
+    if DEBUG:
+        print(f"Gewählter Zielpfad: {target_dir}")
+
+    # Prüfen, ob der Pfad existiert. Falls nicht, versuchen zu erstellen.
+    if not target_dir.exists():
+        try:
+            target_dir.mkdir(parents=True, exist_ok=True)
+            if DEBUG:
+                print(f"Verzeichnis erfolgreich erstellt: {target_dir}")
+            
+        except PermissionError:
+            print(f"Fehler: Keine Berechtigung (Permission Denied), um das Verzeichnis '{target_dir}' zu erstellen.")
+            CREATE_JSON = False
+            if DEBUG:
+                exit(1)
+            
+        except FileNotFoundError:
+            print(f"Fehler: Ein Teil des Pfades '{target_dir}' ist ungültig oder nicht erreichbar.")
+            CREATE_JSON = False
+            if DEBUG:
+                exit(1)
+            
+        except Exception as e:
+            print(f"Fehler: Verzeichnis '{target_dir}' konnte nicht erstellt werden. Grund: {e}")
+            CREATE_JSON = False
+            if DEBUG:
+                exit(1)
+    else:
+        if DEBUG:
+            print(f"Verzeichnis existiert bereits: {target_dir}")
+
+    if CREATE_JSON:
+        JSON_PATH = os.path.join(str(target_dir), "")
 
 # Zufällige Zeitverzögerung 0 bis 3540 Sekunden (0-59min). Wichtig, damit der Heizoel24 Server
 # nicht immer zur gleichen Zeit bombardiert wird!!

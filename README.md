@@ -35,6 +35,11 @@ Zum einrichten, DEBUG auf True setzen.
 
 ## Changelog
 
+### V2.9 (2026-09-25)
+
+- JSON_PATH: Standard Unterverzeichnis "data" bei Script
+- JSON_PATH: Verzeichnis wird automatisch erstellt
+
 ### V2.7 (2026-04-06)
 
 - Jahresverbrauchs Berechnung hinzugefügt
